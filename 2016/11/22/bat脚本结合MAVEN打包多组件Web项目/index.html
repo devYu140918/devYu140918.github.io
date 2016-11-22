@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      bat脚本结合MAVEN打包多组件Web项目 | 鱼儿游 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Yu">
+    
+    
+
+    <meta name="description" content="&amp;emsp;&amp;emsp;经过各方查找资料，结合自身的需要写了一个脚本，将由多个组件构成的maven web工程一键打包并上传到服务器上。实现一键自动化部署。当啦这种方法并不是最高效，其实maven的众多插件中也有自动化部署的插件，以后再慢慢研究。对于简单了解了脚本语言之后沈感其强大。会一些脚本语言，能够省不少事儿。&amp;emsp;&amp;emsp;本文参考了 csdn博客：半步多12345678910111">
+<meta property="og:type" content="article">
+<meta property="og:title" content="bat脚本结合MAVEN打包多组件Web项目 | 鱼儿游">
+<meta property="og:url" content="http://yoursite.com/2016/11/22/bat脚本结合MAVEN打包多组件Web项目/index.html">
+<meta property="og:site_name" content="鱼儿游">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;经过各方查找资料，结合自身的需要写了一个脚本，将由多个组件构成的maven web工程一键打包并上传到服务器上。实现一键自动化部署。当啦这种方法并不是最高效，其实maven的众多插件中也有自动化部署的插件，以后再慢慢研究。对于简单了解了脚本语言之后沈感其强大。会一些脚本语言，能够省不少事儿。&amp;emsp;&amp;emsp;本文参考了 csdn博客：半步多12345678910111">
+<meta property="og:updated_time" content="2016-11-22T08:35:39.425Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="bat脚本结合MAVEN打包多组件Web项目 | 鱼儿游">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;经过各方查找资料，结合自身的需要写了一个脚本，将由多个组件构成的maven web工程一键打包并上传到服务器上。实现一键自动化部署。当啦这种方法并不是最高效，其实maven的众多插件中也有自动化部署的插件，以后再慢慢研究。对于简单了解了脚本语言之后沈感其强大。会一些脚本语言，能够省不少事儿。&amp;emsp;&amp;emsp;本文参考了 csdn博客：半步多12345678910111">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+    <link rel="stylesheet" href="/css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">鱼儿游</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+        <p class="panel-cover__description">
+          早起的虫儿被鸟吃
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">bat脚本结合MAVEN打包多组件Web项目</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2016-11-22" class="post-meta__date date">2016-11-22</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>&emsp;&emsp;经过各方查找资料，结合自身的需要写了一个脚本，将由多个组件构成的maven web工程一键打包并上传到服务器上。实现一键自动化部署。当啦这种方法并不是最高效，其实maven的众多插件中也有自动化部署的插件，以后再慢慢研究。对于简单了解了脚本语言之后沈感其强大。会一些脚本语言，能够省不少事儿。<br><br>&emsp;&emsp;本文参考了 <a href="http://blog.csdn.net/jadyer/article/details/24732131" target="_blank" rel="external">csdn博客：半步多</a><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div></pre></td><td class="code"><pre><div class="line">@echo off</div><div class="line">title 自动打包工具</div><div class="line">color 02</div><div class="line">echo 当前盘符：%~d0</div><div class="line">echo 当前盘符和路径：%~dp0</div><div class="line">echo 当前盘符和路径的短文件名格式：%~sdp0</div><div class="line">echo 当前批处理全路径：%~f0</div><div class="line">echo 当前CMD默认目录：%cd%</div><div class="line">echo 当前脚本的名字%~n0</div><div class="line">set project=%~n0</div><div class="line">set curdir=%~dp0</div><div class="line">set partition=%curdir:~0,1%</div><div class="line">REM tail -f catalina.out 查看tomcat实时日志</div><div class="line">REM 此文件需保存为ANSI编码，方可在Windows下执行</div><div class="line">REM java -cp .;jacob.jar test.CameraTest</div><div class="line">REM rem------------表示行注释，相当于Java中的//</div><div class="line">REM @echo off------表示关闭回显，即不显示本行即下面的命令行(默认DOS编程会把命令显示出来)</div><div class="line">REM color----------设置为02表示DOS窗口背景为黑色，前景(即字体)为绿色</div><div class="line">REM xcopy----------拷贝命令，/Y表示自动覆盖同名文件(否则会在DOS窗口询问Y还是N)</div><div class="line">REM del------------删除文件命令，/S用于删除目录树(即删除目录及目录下的所有子目录和文件)，/Q表示确认要删除(否则DOS会提示用户是否确认删除)</div><div class="line">REM rd-------------删除文件夹命令，/S和/Q含义与del命令的含义相同</div><div class="line">REM ren------------重命名文件，用法：[ren 11.exe 22.exe]</div><div class="line">REM echo 此批处理文件名为：%project%</div><div class="line">REM echo 此批处理文件所在路径为：%curdir%</div><div class="line">REM echo 此批处理文件所在盘符为：%partition%</div><div class="line">REM echo 此批处理文件所在工程为：%curdir:~0,30%</div><div class="line"></div><div class="line">echo 开始打包Maven工程 =================================</div><div class="line"></div><div class="line">REM 开始打包 父组件  </div><div class="line">echo 开始打包 父组件  =================================</div><div class="line">echo %curdir:~,100%父组件</div><div class="line">cd %curdir:~,100%父组件</div><div class="line">echo 父组件 打包完毕 =================================</div><div class="line"></div><div class="line">echo 开始打包 组件1 ： </div><div class="line">REM  复制文件到指定目录中</div><div class="line">REM xcopy %curdir:~,100%组件1\pom.xml %curdir:~0,11%打包 /Y</div><div class="line">echo %curdir:~,100%组件1</div><div class="line">cd %curdir:~,100%s组件1</div><div class="line">call mvn clean install</div><div class="line">echo sms.demo打包完毕 =================================</div><div class="line"></div><div class="line"> REM 开始打包 组件2</div><div class="line">echo 开始打包 组件2=================================</div><div class="line">echo %curdir:~,100%组件2</div><div class="line">cd %curdir:~,100%组件2</div><div class="line">call mvn clean install</div><div class="line">echo 组件2 打包完毕 =================================</div><div class="line"></div><div class="line"> REM 开始打包 组件3</div><div class="line">echo 开始打包 组件3=================================</div><div class="line">echo %curdir:~,100%组件3</div><div class="line">cd %curdir:~,100%组件3</div><div class="line">call mvn clean package</div><div class="line">echo 组件2 打包完毕 =================================</div><div class="line"></div><div class="line">echo Maven工程打包完毕 =================================</div><div class="line"></div><div class="line">echo;</div><div class="line">echo 开始拷贝War包至桌面 =================================</div><div class="line">if exist &quot;%userprofile%\Desktop\&quot; (</div><div class="line">    REM 适用于Win7系统</div><div class="line">     if exist &quot;%userprofile%\Desktop\组件3\&quot; (</div><div class="line">    ) else (</div><div class="line">        echo 创建%userprofile%\Desktop\组件3 文件夹</div><div class="line">        md %userprofile%\Desktop\组件3</div><div class="line">    )</div><div class="line">    xcopy %curdir:~0,100%组件3\target\组件3.war %userprofile%\Desktop\组件3\ /Y</div><div class="line">    echo War包已经拷贝至桌面 =================================</div><div class="line">    </div><div class="line">    echo **********开始上传war包**************</div><div class="line">    cd /d %userprofile%\Desktop\组件3</div><div class="line">    scp 组件3.war root@192.168.1.120:/home/tomcat/webapps</div><div class="line">    echo **********war包上传成功**************</div><div class="line">) else if exist &quot;%userprofile%\桌面\&quot; (</div><div class="line">    REM 适用于XP系统</div><div class="line">     if exist &quot;%userprofile%\桌面\组件3\&quot; (</div><div class="line">    ) else (</div><div class="line">        echo 创建%userprofile%\桌面\组件3 文件夹</div><div class="line">        md %userprofile%\桌面\组件3</div><div class="line">    )</div><div class="line">    xcopy %curdir:~0,100%组件3\target\组件3.war %userprofile%\桌面\组件3\ /Y</div><div class="line">    echo War包已经拷贝至桌面 =================================</div><div class="line"></div><div class="line">    echo **********开始上传war包**************</div><div class="line">    cd /d %userprofile%\桌面\组件3</div><div class="line">    scp 组件3.war root@192.168.1.120:/home/tomcat/webapps</div><div class="line">    echo **********war包上传成功**************</div><div class="line">)</div><div class="line"></div><div class="line"></div><div class="line">echo;</div><div class="line">pause</div></pre></td></tr></table></figure></p>
+<p>父组件管理了所有组件的依赖，按照依赖顺序逐个打包，组件3是真正包含前端内容的web工程，组件中只有一个pom文件，其余两个组件，主要是业务逻辑和数据处理。到这里脚本就写完了。</p>
+
+  </section>
+
+  
+  
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>
