@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    
+
+    <title>
+      自动化创建多组件Maven工程 | 鱼儿游 
+    </title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    
+      <meta name="author" content="Yu">
+    
+    
+
+    <meta name="description" content="&amp;emsp;&amp;emsp;使用这个脚本的前提在于已经下载并配置好了maven环境变量，我这里使用的maven是3.3.9的版本。&amp;emsp;&amp;emsp;现在的java项目，主流的还是采用基于Maven的构建方式。maven拥有中的插件，帮助我们去构建和管理工程依赖问题。当一个工程被拆分成多个maven组件时，我们组需要利用一些集成开发工具不停的创建多个工程，然后再修改他们之间的依赖。对一个写程序的人">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自动化创建多组件Maven工程 | 鱼儿游">
+<meta property="og:url" content="http://yueryou.science/2016/12/02/自动化创建多组件Maven工程/index.html">
+<meta property="og:site_name" content="鱼儿游">
+<meta property="og:description" content="&amp;emsp;&amp;emsp;使用这个脚本的前提在于已经下载并配置好了maven环境变量，我这里使用的maven是3.3.9的版本。&amp;emsp;&amp;emsp;现在的java项目，主流的还是采用基于Maven的构建方式。maven拥有中的插件，帮助我们去构建和管理工程依赖问题。当一个工程被拆分成多个maven组件时，我们组需要利用一些集成开发工具不停的创建多个工程，然后再修改他们之间的依赖。对一个写程序的人">
+<meta property="og:updated_time" content="2016-12-02T08:22:27.748Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自动化创建多组件Maven工程 | 鱼儿游">
+<meta name="twitter:description" content="&amp;emsp;&amp;emsp;使用这个脚本的前提在于已经下载并配置好了maven环境变量，我这里使用的maven是3.3.9的版本。&amp;emsp;&amp;emsp;现在的java项目，主流的还是采用基于Maven的构建方式。maven拥有中的插件，帮助我们去构建和管理工程依赖问题。当一个工程被拆分成多个maven组件时，我们组需要利用一些集成开发工具不停的创建多个工程，然后再修改他们之间的依赖。对一个写程序的人">
+    
+    
+    
+      <link rel="icon" type="image/x-icon" href="/favicon.png">
+    
+    <link rel="stylesheet" href="/css/uno.css">
+    <link rel="stylesheet" href="/css/highlight.css">
+    <link rel="stylesheet" href="/css/archive.css">
+    <link rel="stylesheet" href="/css/china-social-icon.css">
+
+</head>
+<body>
+
+    <span class="mobile btn-mobile-menu">
+        <i class="icon icon-list btn-mobile-menu__icon"></i>
+        <i class="icon icon-x-circle btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+
+<header class="panel-cover panel-cover--collapsed">
+
+
+  <div class="panel-main">
+
+  
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        
+
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage">鱼儿游</a></h1>
+        <hr class="panel-cover__divider" />
+
+        
+        <p class="panel-cover__description">
+          早起的虫儿被鸟吃
+        </p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+        
+
+        <div class="navigation-wrapper">
+
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+
+              
+                
+                <li class="navigation__item"><a href="/#blog" title="" class="blog-button">首页</a></li>
+              
+                
+                <li class="navigation__item"><a href="/about" title="" class="">关于</a></li>
+              
+                
+                <li class="navigation__item"><a href="/archive" title="" class="">归档</a></li>
+              
+
+            </ul>
+          </nav>
+
+          <!-- ----------------------------
+To add a new social icon simply duplicate one of the list items from below
+and change the class in the <i> tag to match the desired social network
+and then add your link to the <a>. Here is a full list of social network
+classes that you can use:
+
+    icon-social-500px
+    icon-social-behance
+    icon-social-delicious
+    icon-social-designer-news
+    icon-social-deviant-art
+    icon-social-digg
+    icon-social-dribbble
+    icon-social-facebook
+    icon-social-flickr
+    icon-social-forrst
+    icon-social-foursquare
+    icon-social-github
+    icon-social-google-plus
+    icon-social-hi5
+    icon-social-instagram
+    icon-social-lastfm
+    icon-social-linkedin
+    icon-social-medium
+    icon-social-myspace
+    icon-social-path
+    icon-social-pinterest
+    icon-social-rdio
+    icon-social-reddit
+    icon-social-skype
+    icon-social-spotify
+    icon-social-stack-overflow
+    icon-social-steam
+    icon-social-stumbleupon
+    icon-social-treehouse
+    icon-social-tumblr
+    icon-social-twitter
+    icon-social-vimeo
+    icon-social-xbox
+    icon-social-yelp
+    icon-social-youtube
+    icon-social-zerply
+    icon-mail
+
+-------------------------------->
+
+<!-- add social info here -->
+
+
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay"></div>
+  </div>
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner entry">
+            
+
+<article class="post-container post-container--single">
+
+  <header class="post-header">
+    
+    <h1 class="post-title">自动化创建多组件Maven工程</h1>
+
+    
+
+    <div class="post-meta">
+      <time datetime="2016-12-02" class="post-meta__date date">2016-12-02</time> 
+
+      <span class="post-meta__tags tags">
+
+          
+
+          
+
+      </span>
+    </div>
+    
+    
+
+  </header>
+
+  <section id="post-content" class="article-content post">
+    <p>&emsp;&emsp;使用这个脚本的前提在于已经下载并配置好了maven环境变量，我这里使用的maven是3.3.9的版本。<br>&emsp;&emsp;现在的java项目，主流的还是采用基于Maven的构建方式。maven拥有中的插件，帮助我们去构建和管理工程依赖问题。当一个工程被拆分成多个maven组件时，我们组需要利用一些集成开发工具不停的创建多个工程，然后再修改他们之间的依赖。对一个写程序的人来说，我更喜欢命令窗窗。所以今天就写一个脚本半自动化的去创建多组件maven工程。算是对自己学习bat脚本的验证吧。目前功能还不够强大，不能够自动配置组件之间的依赖关系。<br><br>&emsp;&emsp;值得注意的是这行代码<code>mvn archetype:generate -DarchetypeCatalog=internal</code>，如果使用<code>mvn archetype:generate</code>命令，maven每次都会去下载一个模板文件，数据量比较大，很多对我们而言没什么大用。如果每创建一个工程都去下载一次模板文件，显然这不是一个明智的选择。这里我考虑将maven模板本地化，将<code>archetype-catalog.xml</code>事先下载下来，把常用模板提取出来。<br></p>
+<h3 id="maven模板本地化方法具体如下："><a href="#maven模板本地化方法具体如下：" class="headerlink" title="maven模板本地化方法具体如下："></a>maven模板本地化方法具体如下：</h3><pre><code>1. 进入本机maven_repository仓库目录
+2. 使用mvn archetype:crawl 命令，它会在 C:\Users\Administrator\.m2\repository目录下生成一个archetype-catalog.xml文件
+3. 将archetype-catalog.xml移到上一层目录，也就是C:\Users\Administrator\.m2
+</code></pre><p>&emsp;&emsp;maven 本地化之后我们就可以开心的使用下面的脚本了，新建一个文件，改后缀名为<code>.bat</code>,保存的文件的编码方式为gbk或者其他的windows默认编码，若使用<code>utf-8</code>将导致控制台中文显示乱码。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">@echo off</div><div class="line">title maven工程生成工具</div><div class="line">color 02</div><div class="line">echo 欢迎使用maven工程生成工具</div><div class="line"></div><div class="line">:start</div><div class="line">echo 请输入工程数量，比如：[1~9]</div><div class="line">set /p input_number=</div><div class="line">REM 输入的参数与0相加，若结果等于输入的数则，输入的参数是一个数字</div><div class="line">set /a num=input_number+0</div><div class="line">set index=0</div><div class="line">REM echo %num%</div><div class="line">REM echo %input_number%==%num%</div><div class="line">if not %input_number%==%num% echo .你输入不是一个数字！！&amp;goto :start </div><div class="line"></div><div class="line">:projectPath</div><div class="line">REM cls REM 清屏</div><div class="line">echo .请输入你工程存储路径，比如：C:\dept\shared</div><div class="line">set /p input_source=</div><div class="line">if not exist &quot;%input_source%&quot; echo .你输入路径不存在！！&amp;goto :projectPath </div><div class="line">echo 进入工程路径：%input_source%</div><div class="line">cd /d %input_source%</div><div class="line"></div><div class="line">:createProject</div><div class="line">echo 将会创建  %input_number% 个工程</div><div class="line">set /a index=index+1</div><div class="line">echo ===========开始第 %index% 个创建工程====================</div><div class="line">call mvn archetype:generate -DarchetypeCatalog=internal</div><div class="line"></div><div class="line">echo ===========第 %index% 个工程创建完成=====================</div><div class="line"></div><div class="line">if not %index%==%num% goto :createProject</div><div class="line"></div><div class="line">pause</div></pre></td></tr></table></figure></p>
+
+  </section>
+
+  
+  
+</article>
+
+
+            <footer class="footer">
+
+    <span class="footer__copyright">&copy; 2014-2015. | 由<a href="https://hexo.io/">Hexo</a>强力驱动 | 主题<a href="https://github.com/someus/huno">Huno</a></span>
+    
+</footer>
+        </div>
+    </div>
+
+    <!-- js files -->
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <script src="/js/scale.fix.js"></script>
+    
+
+    
+
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript"> 
+        $(document).ready(function(){
+            MathJax.Hub.Config({ 
+                tex2jax: {inlineMath: [['[latex]','[/latex]'], ['\\(','\\)']]} 
+            });
+        });
+    </script>
+
+
+    
+
+    <script src="/js/awesome-toc.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.awesome_toc({
+                overlay: true,
+                contentId: "post-content",
+            });
+        });
+    </script>
+
+
+    
+    
+    <!--kill ie6 -->
+<!--[if IE 6]>
+  <script src="//letskillie6.googlecode.com/svn/trunk/2/zh_CN.js"></script>
+<![endif]-->
+
+</body>
+</html>
