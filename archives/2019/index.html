@@ -285,9 +285,107 @@
         
           
         
+          
+        
       
     
     
+      
+        
+          <div class='post-wrapper'>
+            <article class="post reveal ">
+  
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  <h2 class="title">
+    <a href="/2019/06/DB2安装使用笔记/">
+      DB2安装使用笔记
+    </a>
+  </h2>
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="/" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>YUEX</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2019-06-25</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+  <section class="article typo">
+    <div class="article-entry" itemprop="articleBody">
+      <h2 id="DB2下载安装"><a href="#DB2下载安装" class="headerlink" title="DB2下载安装"></a>DB2下载安装</h2><p>&emsp;&emsp;因为项目需要，开始接触DB2数据库，首先是下载安装db2 express C版。在IBM的官网上找了好长时间，下载还需要注册申请，好麻烦的说。网上也有一些blog给出了一些下载地址，需要注册使用，只有express c是工开发学习免费使用的。目前版本11.1 express c，下载链接链接：<a href="https://pan.baidu.com/s/1V9AbAXx6qBPkF9fiVOFQyQ" target="_blank" rel="noopener">https://pan.baidu.com/s/1V9AbAXx6qBPkF9fiVOFQyQ</a> 提取码：wdqh ，需要的下载从速，若链接失效不能保证及时更新，请谅解。</p>
+<p>&emsp;&emsp;安装过程根据引导一步步来就可以了，建议将自己新建文件夹，将安装过程需要配置路径的地方，都配置成自己的新建好的目录。参考：<a href="https://blog.csdn.net/u010289197/article/details/77507871" title="在windown下安装DB2-Express-C" target="_blank" rel="noopener">在windown下安装DB2-Express-C</a> 这里并没有完全按照这篇blog说的来操作，在配置管理服务器用户信息这一步，使用的本地系统账户。</p>
+<h2 id="配置连接使用"><a href="#配置连接使用" class="headerlink" title="配置连接使用"></a>配置连接使用</h2><p>&emsp;&emsp;由于这里安装使用的本地系统账户，因此登录数据库使用的用户名和密码就是当前windows登录使用的用户名和密码。其他情况自行探索。安装完成之后，以管理员权限运行cmd，执行 db2cmd 打开db2控制台。</p>
+<p><img src="https://yueryou.github.io/2019/06/DB2%E5%AE%89%E8%A3%85%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/images/db2_database_connection.jpg" alt="db2_database_connection"></p>
+<p>开始创建数据库： </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">db2 create database test</span><br><span class="line"></span><br><span class="line">简单数据操作,客户端链接方式，DB2使用 DbVisualizer 10.0.20 工具进行连接，</span><br><span class="line"></span><br><span class="line">//删除数据库：</span><br><span class="line">db2 drop database test</span><br><span class="line"></span><br><span class="line">//停止所有的应用链接 </span><br><span class="line">db2 force applications all</span><br><span class="line"></span><br><span class="line">//控制台连接到db2数据库 </span><br><span class="line">db2 CONNECT TO test</span><br><span class="line"></span><br><span class="line">创建缓冲池：db2 CREATE BUFFERPOOL UAP_1_0_POOL  SIZE 5000 PAGESIZE 16384</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    
+      <div class="full-width auto-padding tags">
+        
+          <a href="/tags/数据库/" rel="nofollow"><i class="fas fa-hashtag fa-fw"></i>数据库</a>
+        
+      </div>
+    
+  </section>
+</article>
+
+          </div>
+        
       
         
           <div class='post-wrapper'>
@@ -676,7 +774,7 @@
 </header>
 
     <div class='content pure'>
-      <a href="/tags/项目分析MAuth/" style="font-size: 14px; color: #999">项目分析MAuth</a>
+      <a href="/tags/数据库/" style="font-size: 14px; color: #999">数据库</a> <a href="/tags/项目分析MAuth/" style="font-size: 14px; color: #999">项目分析MAuth</a>
     </div>
   </section>
 
