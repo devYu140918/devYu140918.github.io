@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   
-  <title>Archives | 鱼儿游</title>
+  <title>Archives: 2019/6 | 鱼儿游</title>
   
   
 
@@ -278,31 +278,176 @@
     <div class='body-wrapper'>
       <div class='l_main'>
 	
-	  <article id="archive-page" class="post article white-box">
-	    <section class="archive">
-	      
-	          <div class="archive-item archive-year mark">
-	            <h2>2019</h2>
-	            <hr>
-	          </div>
-	      
-	          <div class="archive-item archive-post mark">
-	            <a href="/2019/06/MAuth学习分析笔记/">
-	              <time>06-20</time>
-	              <span class="title">
-	                
-	                  MAuth学习分析笔记
-	                
-	                
-	                
-									
-									
-	              </span>
-	            </a>
-	          </div>
-	      
-	    </section>
-	  </article>
+		
+  <section class="post-list">
+    
+      
+        
+          
+        
+      
+    
+    
+      
+        
+          <div class='post-wrapper'>
+            <article class="post reveal ">
+  
+
+
+  <section class='meta'>
+    
+    
+    <div class="meta" id="header-meta">
+      
+        
+  <h2 class="title">
+    <a href="/2019/06/MAuth学习分析笔记/">
+      MAuth学习分析笔记
+    </a>
+  </h2>
+
+
+      
+      <div class='new-meta-box'>
+        
+          
+        
+          
+            
+  <div class='new-meta-item author'>
+    <a href="/" rel="nofollow">
+      
+        <i class="fas fa-user" aria-hidden="true"></i>
+      
+      <p>YUEX</p>
+    </a>
+  </div>
+
+
+          
+        
+          
+            <div class="new-meta-item date">
+  <a class='notlink'>
+    <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+    <p>2019-06-20</p>
+  </a>
+</div>
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+
+          
+        
+          
+            
+
+          
+        
+      </div>
+      
+        <hr>
+      
+    </div>
+  </section>
+
+
+  <section class="article typo">
+    <div class="article-entry" itemprop="articleBody">
+      <h2 id="MAuth简介"><a href="#MAuth简介" class="headerlink" title="MAuth简介"></a>MAuth简介</h2><p>&emsp;&emsp;MAuth移动统一认证平台系统，是一套完整的移动身份认证解决方案。包含管理后台MAuthManage、移动认证服务MAuthServer两个核心。外部依赖数据库，CA服务器，Netpass令牌服务器，单点登录服务，NetSeal签章服务。</p>
+<p>&emsp;&emsp;管理后台系统软件结构图如下：</p>
+<p><img src="MAuth%E5%AD%A6%E4%B9%A0%E5%88%86%E6%9E%90%E7%AC%94%E8%AE%B0/mauth_soft_logic.jpg" alt="系统软件结构图"></p>
+<p>&emsp;&emsp;主要提供管理和统计报表服务，主要由系统管理员使用，管理用户、证书，令牌。审核用户、证书、令牌。报表统计和日志管理。</p>
+<h2 id="系统结构"><a href="#系统结构" class="headerlink" title="系统结构"></a>系统结构</h2><p>&emsp;&emsp;系统架构描述了与其周边相关服务的关联关系，MAuth移动统一认证管理平台系统架构图如下：</p>
+<p><img src="MAuth%E5%AD%A6%E4%B9%A0%E5%88%86%E6%9E%90%E7%AC%94%E8%AE%B0/mauth_sys_logic.jpg" alt="系统软件结构图"></p>
+<p>&emsp;&emsp;目前学习的MAuthServer 为 V3.1.0.12版本。MAuth系统在实际应用场景中，位于客户业务系统之前，主要提供安全认证，证书管理，令牌管理，签名，签名验证服务。</p>
+<h2 id="核心业务流程描述"><a href="#核心业务流程描述" class="headerlink" title="核心业务流程描述"></a>核心业务流程描述</h2><h3 id="证书服务"><a href="#证书服务" class="headerlink" title="证书服务"></a>证书服务</h3><ul>
+<li><p>证书申请下载</p>
+<p>&emsp;&emsp;为移动设备提供下载移动证书服务</p>
+<p>业务处理流程如下图：</p>
+<p><img src="MAuth%E5%AD%A6%E4%B9%A0%E5%88%86%E6%9E%90%E7%AC%94%E8%AE%B0/mauth_request_cert.jpg" alt="系统软件结构图"></p>
+<p>&emsp;&emsp;证书申请下载请求由客户端发起，经过一系列的校验，通过之后，开始于CA进行交互。</p>
+<p>正常流程，需要与CA交互三次。</p>
+<p>第一步，根据用户名获取UUID，CertManger.applyUser()</p>
+<p>第二步，获取REFNO和AUTHCODE两码，CertManager.requestCert()</p>
+<p>第三步，下载证书，CertManager.downCert()</p>
+</li>
+</ul>
+<p>  异常流程还需要，对原始证书进行作废。因此需要与CA交互四次。</p>
+<ul>
+<li><p>p10： </p>
+<p>&emsp;&emsp;p10证书一般是一个base64文件，实际上他不是一张真正的证书应该是一段可以向CA申请证书的P10请求，该请求一般是通过硬件生成密钥对后，将私钥单独存放，<u>但是将公钥放入p10中</u>，CA受到该p10请求后，可以校验，并根据p10中的信息制作一张没有私钥的公钥证书，p10 即公钥数据。</p>
+</li>
+<li><p>证书内容</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">Certificate:</span><br><span class="line">    Data:</span><br><span class="line">        Version: 3 (0x2)</span><br><span class="line">        Serial Number: 14270177914825791894 (0xc609db34f6d0d996)</span><br><span class="line">    Signature Algorithm: sha1WithRSAEncryption</span><br><span class="line">        Issuer: C=CN, ST=WH, L=WH, O=yueryou, OU=yueryou, CN=*.yueryou.science</span><br><span class="line">        Validity</span><br><span class="line">            Not Before: Jun 20 08:55:36 2019 GMT</span><br><span class="line">            Not After : Jun 17 08:55:36 2029 GMT</span><br><span class="line">        Subject: C=CN, ST=WH, L=WH, O=yueryou, OU=yueryou, CN=*.yueryou.science</span><br><span class="line">        Subject Public Key Info:</span><br><span class="line">            Public Key Algorithm: rsaEncryption</span><br><span class="line">                Public-Key: (1024 bit)</span><br><span class="line">                Modulus:</span><br><span class="line">                    00:f0:9f:9a:3e:bf:9a:93:d4:b9:1a:84:7e:27:ac:</span><br><span class="line">                    73:85:5f:a4:c1:cd:7f:bb:e8:64:eb:09:6e:36:db:</span><br><span class="line">                    c1:68:6a:45:cc:c4:06:ff:f6:cd:b4:8b:6c:d6:6d:</span><br><span class="line">                    b7:6a:b0:1b:fa:95:71:82:0f:2d:24:90:7f:25:ad:</span><br><span class="line">                    2d:84:f5:e0:f7:b1:4e:9c:de:60:54:b9:a8:71:41:</span><br><span class="line">                    2e:7f:56:47:66:f5:99:55:30:52:db:bb:50:f0:a1:</span><br><span class="line">                    1f:be:f3:d1:95:cb:dd:cf:d7:1a:44:18:ca:f2:26:</span><br><span class="line">                    3c:59:8e:b5:f4:56:57:3d:27:c8:b2:23:c2:41:28:</span><br><span class="line">                    8f:63:ef:9b:d8:30:bd:5c:73</span><br><span class="line">                Exponent: 65537 (0x10001)</span><br><span class="line">        X509v3 extensions:</span><br><span class="line">            X509v3 Basic Constraints:</span><br><span class="line">                CA:FALSE</span><br><span class="line">            X509v3 Key Usage:</span><br><span class="line">                Digital Signature, Non Repudiation, Key Encipherment</span><br><span class="line">    Signature Algorithm: sha1WithRSAEncryption</span><br><span class="line">         c8:e2:b9:36:32:f9:a4:a1:94:d7:79:75:a2:64:19:f6:79:71:</span><br><span class="line">         24:4e:c7:b5:ce:b8:8e:5e:ea:e3:6f:93:64:eb:aa:a5:d7:78:</span><br><span class="line">         eb:e0:77:f2:c3:9c:5a:0b:21:06:a8:f0:12:5d:e7:92:31:28:</span><br><span class="line">         10:ad:12:a7:44:6a:1c:76:11:b5:ca:79:09:d0:c4:bf:b1:d8:</span><br><span class="line">         4a:8b:51:27:56:44:90:92:67:6d:0b:5a:eb:5a:b0:51:97:40:</span><br><span class="line">         01:f7:9b:7b:35:95:a4:34:08:9d:68:f5:4e:b5:3e:0e:67:d6:</span><br><span class="line">         08:4d:3b:97:43:bd:96:47:0f:33:2c:27:c1:53:07:5e:9d:82:</span><br><span class="line">         c9:18</span><br></pre></td></tr></table></figure>
+
+<p>&emsp;&emsp;证书主要内容有：1.证书拥有者，2.证书发布者，3.证书序列号，4.证书有效期开始结束日期，5.证书签名，6.签名算法，7.证书版本，9公钥，8.其他扩展信息</p>
+<ul>
+<li>CA证书的重要属性（DN、SN、参考号、授权号、有效日期、证书状态、颁发者）</li>
+</ul>
+<ol>
+<li>DN： 用户唯一标识（Distinct Name,DN串内容：C标识国家代码，ST标识省份，L标识城市，O标识组织代码，OU组织类型企业或个人，CN标识域名）</li>
+<li>SN： 证书序列号证书序列号是证书的唯一标识。和DN的区别是，当发生换证、补发情况时，DN是相同的，而SN是不同的。</li>
+<li>参考号和授权码，这两个字段用在证书下载过程中。</li>
+<li>证书状态有：未下载、激活、冻结和注销。</li>
+<li>颁发者，是证书的签发证书DN，在证书验证过程中需要验证该属性</li>
+</ol>
+</li>
+<li><p>证书冻结解冻</p>
+<p>&emsp;&emsp;证书冻结和证书作废基本差不多，唯一的区别是，证书作废之后，证书就被吊销了，只能重新申请新的证书，原来的证书无法使用。而证书冻结后，可以进行解冻，解冻后的证书依然有效且可以正常使用。</p>
+<p><img src="./MAuth%E5%AD%A6%E4%B9%A0%E5%88%86%E6%9E%90%E7%AC%94%E8%AE%B0/mauth_lock_and_unlock.jpg" alt="证书冻结解冻流程图"></p>
+<p>证书冻结和解冻都需要和CA进行一次交互即可。</p>
+</li>
+</ul>
+<ul>
+<li><p>证书作废</p>
+<p>&emsp;&emsp;证书因为某种原因需要作废处理，<u>作废后的证书将永久无法使用。</u></p>
+<ol>
+<li>证书持有者改变，无权使用</li>
+<li>证书持有者的密钥已遭到破环或者证书介质丢失，或者怀疑密钥泄露，为避免遭受损失</li>
+<li>证书持有者本人不想使用该证书</li>
+<li>证书签发者CA的密钥已被破坏或到期失效</li>
+<li>证书签发CA决定作废证书</li>
+</ol>
+<p>CA会通过CRL定期发布出去</p>
+<p><img src="MAuth%E5%AD%A6%E4%B9%A0%E5%88%86%E6%9E%90%E7%AC%94%E8%AE%B0/mauth_cancel_cert.jpg" alt="证书作废流程图"></p>
+</li>
+</ul>
+
+      
+    </div>
+    
+      <div class="full-width auto-padding tags">
+        
+          <a href="/tags/项目分析MAuth/" rel="nofollow"><i class="fas fa-hashtag fa-fw"></i>项目分析MAuth</a>
+        
+      </div>
+    
+  </section>
+</article>
+
+          </div>
+        
+      
+    
+  </section>
+  
+    
+    <!-- 根据主题中的设置决定是否在archive中针对摘要部分的MathJax公式加载mathjax.js文件 -->
+    
+    
+
+  
+
+
 	
 </div>
 <aside class='l_side'>
